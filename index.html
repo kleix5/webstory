@@ -30,52 +30,11 @@
 											Get Started
 										</a>
 									</li>
-								</ul>
-
-								<script>
-									document.addEventListener('DOMContentLoaded', function() {
-										const button = document.getElementById('myButton');
-										
-										button.addEventListener('click', function(event) {
-											// Если кнопка ведёт по якорю — предотвращаем стандартное поведение (опционально)
-											// event.preventDefault();
-											
-											// Отправляем POST-запрос на Go-сервер
-											fetch('http://localhost:8080/click', {
-												method: 'POST',
-												headers: {
-													'Content-Type': 'application/json',
-												},
-												body: JSON.stringify({ 
-													timestamp: new Date().toISOString(),
-													userAgent: navigator.userAgent
-												})
-											})
-											.then(response => {
-												if (!response.ok) {
-													throw new Error('HTTP ошибка: ' + response.status);
-												}
-												return response.text();
-											})
-											.then(data => {
-												console.log('Успех:', data);
-												// Опционально: визуальная обратная связь
-												button.textContent = '✓ Отправлено!';
-												setTimeout(() => {
-													button.textContent = 'Get Started';
-												}, 2000);
-											})
-											.catch(error => {
-												console.error('Ошибка отправки:', error);
-												// Можно добавить обработку ошибки для пользователя
-											});
-										});
-									});
-								</script>
+							</ul>
 							</ul>
 						</div>
 						<div class="image">
-							<img src="images/cs_pinguin.png" alt="" />
+							<img src="images/spotlight01.jpg" alt="" />
 						</div>
 					</section>
 
@@ -89,7 +48,7 @@
 							</ul>
 						</div>
 						<div class="image">
-							<img src="images/spotlight01.jpg" alt="" />
+							<img src="images/cs_pinguin.png" alt="" />
 						</div>
 					</section>
 
