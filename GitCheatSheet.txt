@@ -103,3 +103,21 @@ Note:
   - `-r`: recursive.
   - `--cached`: index-only removal.
   - `.`: current directory scope.
+
+
+
+# взять файл из ветки
+git restore --source=branch file.txt
+
+# зафиксировать
+git add file.txt
+git commit -m "copy file"
+
+Взять файл из любого комита
+git restore --source=HEAD~1 file.txt
+
+# посмотреть все файлы на другой ветке не выходя из мейна
+git ls-tree -r --name-only branch_name
+
+# посмотреть конкретный файл
+git show branch_name:path/to/file
