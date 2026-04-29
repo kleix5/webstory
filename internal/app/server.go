@@ -32,3 +32,4 @@ func (s *Server) Start(addr string) error {
 func (s *Server) routes() {
 	s.mux.Handle("/", http.FileServer(http.Dir(".")))
 }
+

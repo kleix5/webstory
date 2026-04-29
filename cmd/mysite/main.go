@@ -13,5 +13,4 @@ func main() {
 
 	fmt.Println("Server running on HOST: ", Host)
 	log.Fatal(server.Start(":5000"))
-
 }
