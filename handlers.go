@@ -6,9 +6,14 @@ import (
 	"net/http"
 )
 
-var counterClick int64
-
-//Главная страница
+type Order struct {
+	Id        int
+	Name      string
+	Contact   string
+	Message   string
+	Status    string
+	CreatedAt string
+}
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	//Любой путь кроме "/" отправляем на 404
@@ -26,17 +31,6 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, nil)
 
 }
-
-// func clickHandler(w http.ResponseWriter, r *http.Request) {
-// 	if r.Method != http.MethodPost {
-// 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-// 		return
-// 	}
-// 	count := atomic.AddInt64(&counterClick, 1)
-// 	fmt.Printf("Кнопка нажата: %d раз\n", count)
-
-// 	http.Redirect(w, r, "/thanks", http.StatusSeeOther)
-// }
 
 func orderHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
@@ -59,5 +53,42 @@ func orderHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.Redirect(w, r, "/", http.StatusSeeOther)
+
+}
+
+func adminHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/admin" {
+		http.NotFound(w, r)
+		return
+	}
+
+	tmpl, err := template.ParseFiles("templates/admin.html")
+	if err != nil {
+		http.Error(w, "Не удалось загрузить страницу", http.StatusInternalServerError)
+		return
+	}
+
+	var orders []Order
+	rows, err := DB.Query("SELECT id, name, contact, message, status, created_at FROM orders")
+
+	for rows.Next() {
+		var o Order
+		rows.Scan(&o.Id, &o.Name, &o.Contact, &o.Message, &o.Status, &o.CreatedAt)
+		orders = append(orders, o)
+	}
+
+	tmpl.Execute(w, orders)
+}
+
+func statusHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	id := r.FormValue("id")
+	status := r.FormValue("status")
+	DB.Exec("UPDATE orders SET status = $1 WHERE id = $2", status, id)
+
+	http.Redirect(w, r, "/admin", http.StatusSeeOther)
 
 }
