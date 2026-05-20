@@ -1,0 +1,23 @@
+<table>
+{{ range . }}
+<tr>
+    <td>{{ .Name }}</td>
+    <td>{{ .Contact }}</td>
+    <td>{{ .Message }}</td>
+    <td>{{ .Status }}</td>
+    <td>
+       <form action="/admin/status" method="POST">
+        <input type="hidden" name="id" value="{{ .Id }}">
+        <input type="hidden" name="status" value="in progress">
+        <button type="submit">В работу</button>
+        </form>
+    <form action="/admin/status" method="POST">
+        <input type="hidden" name="id" value="{{ .Id }}">
+        <input type="hidden" name="status" value="done">
+        <button type="submit">Завершён</button>
+    </form>
+    </td>
+    <td>{{ .CreatedAt }}</td>
+</tr>
+{{ end }}
+</table>
